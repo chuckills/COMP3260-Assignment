@@ -1,6 +1,6 @@
 public class Application
 {
-    public void run()
+    private void run()
     {
 
     }
