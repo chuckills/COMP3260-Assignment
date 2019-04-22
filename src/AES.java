@@ -7,7 +7,7 @@ public abstract class AES
 
     public void expandKey(int[][] key)
     {
-        
+
     }
 
     public void compareBits(int round, int[][] preRound, int[][] postRound)
