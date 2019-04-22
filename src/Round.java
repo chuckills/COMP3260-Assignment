@@ -1,27 +1,80 @@
 public class Round
 {
+    private boolean decrypt;
+
     public Round()
     {
-
+        decrypt = false;
     }
 
-    public void subBytes()
+    public Round(boolean decrypt)
     {
-
+        this.decrypt = decrypt;
     }
 
-    public void shiftRows()
+    public int[][] subBytes(int[][] bytesIn)
     {
+        int[][] bytesOut = bytesIn;
 
+        if(!decrypt)
+        {
+
+        }
+        else
+        {
+
+        }
+
+        return bytesOut;
     }
 
-    public void mixCols()
+    public int[][] shiftRows(int[][] bytesIn)
     {
+        int[][] bytesOut = bytesIn;
 
+        if(!decrypt)
+        {
+
+        }
+        else
+        {
+
+        }
+
+        return bytesOut;
     }
 
-    public void addKey()
+    public int[][] mixCols(int[][] bytesIn)
     {
+        int[][] bytesOut = bytesIn;
 
+        if(!decrypt)
+        {
+
+        }
+        else
+        {
+
+        }
+
+        return bytesOut;
     }
+
+    public int[][] addKey(int[][] bytesIn)
+    {
+        int[][] bytesOut = bytesIn;
+
+        if(!decrypt)
+        {
+
+        }
+        else
+        {
+
+        }
+
+        return bytesOut;
+    }
+
+
 }
