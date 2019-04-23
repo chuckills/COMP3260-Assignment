@@ -22,18 +22,37 @@ public class Round
 
     public int[][] subBytes(int[][] inState)
     {
-        int[][] outState = inState;
+        int row;
+        int col;
 
         if(!decrypt)
         {
-
+            for(int i = 0; i < inState.length; i++)
+            {
+                for(int j = 0; j < inState[i].length; j++)
+                {
+                    String address = String.format("%1$02X", inState[i][j]);
+                    row = Integer.valueOf(address.substring(0, 1), 16);
+                    col = Integer.valueOf(address.substring(1), 16);
+                    inState[i][j] = Sbox.Sbox[row][col];
+                }
+            }
         }
         else
         {
-
+            for(int i = 0; i < inState.length; i++)
+            {
+                for(int j = 0; j < inState[i].length; j++)
+                {
+                    String address = String.format("%1$02X", inState[i][j]);
+                    row = Integer.valueOf(address.substring(0, 1), 16);
+                    col = Integer.valueOf(address.substring(1), 16);
+                    inState[i][j] = Sbox.ISbox[row][col];
+                }
+            }
         }
 
-        return outState;
+        return inState;
     }
 
     /**

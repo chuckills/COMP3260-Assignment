@@ -42,6 +42,29 @@ public class Application
         outputResult("P", version);
         outputResult("K", version);
 
+        /*System.out.println(Arrays.toString(inputBlock[0]));
+        System.out.println(Arrays.toString(inputBlock[1]));
+        System.out.println(Arrays.toString(inputBlock[2]));
+        System.out.println(Arrays.toString(inputBlock[3]));
+
+        System.out.println();
+
+        Round test = new Round(keyBlock);
+        test.subBytes(inputBlock);
+        System.out.println(Arrays.toString(inputBlock[0]));
+        System.out.println(Arrays.toString(inputBlock[1]));
+        System.out.println(Arrays.toString(inputBlock[2]));
+        System.out.println(Arrays.toString(inputBlock[3]));
+
+        System.out.println();
+
+        test = new Round(keyBlock, true);
+        test.subBytes(inputBlock);
+        System.out.println(Arrays.toString(inputBlock[0]));
+        System.out.println(Arrays.toString(inputBlock[1]));
+        System.out.println(Arrays.toString(inputBlock[2]));
+        System.out.println(Arrays.toString(inputBlock[3]));*/
+
         //System.out.println(String.format("%1$02X", Sbox.Sbox[0][0]));
     }
 
