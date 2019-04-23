@@ -2,52 +2,52 @@ public class AES1 extends AES
 {
     public AES1()
     {
-        avalanche = new int[10];
+        super();
     }
 
-    public int[][] encode(int[][] plain)
+    public int[][] encode(int[][] inState, int[][] keyBlock)
     {
-        Round round = new Round();
+        Round round = new Round(keyBlock);
 
-        int[][] cipher = round.addKey(plain);
+        int[][] outState = round.addKey(inState, 0);
 
         for(int i = 0; i < 9; i++)
         {
-            plain = cipher;
+            inState = outState;
 
-            cipher = round.shiftRows(cipher);
-            cipher = round.mixCols(cipher);
-            cipher = round.addKey(cipher);
-            compareBits(i, plain, cipher);
+            outState = round.shiftRows(outState);
+            outState = round.mixCols(outState);
+            outState = round.addKey(outState, i + 1);
+            compareBits(i, inState, outState);
         }
-        plain = cipher;
+        inState = outState;
 
-        cipher = round.shiftRows(cipher);
-        cipher = round.addKey(cipher);
+        outState = round.shiftRows(outState);
+        outState = round.addKey(outState, 10);
 
-        compareBits(10, plain, cipher);
+        compareBits(10, inState, outState);
 
-        return cipher;
+        return outState;
     }
 
-    public int[][] decode(int[][] cipher)
+    public int[][] decode(int[][] inState, int[][] keyBlock)
     {
-        Round round = new Round(true);
+        Round round = new Round(keyBlock, true);
 
-        int[][] plain = round.addKey(cipher);
+        int[][] outState = round.addKey(inState, 0);
 
         for(int i = 0; i < 9; i++)
         {
-            plain = round.shiftRows(plain);
+            outState = round.shiftRows(outState);
 
-            plain = round.addKey(plain);
-            plain = round.mixCols(plain);
+            outState = round.addKey(outState, i + 1);
+            outState = round.mixCols(outState);
         }
 
-        plain = round.shiftRows(plain);
+        outState = round.shiftRows(outState);
 
-        plain = round.addKey(plain);
+        outState = round.addKey(outState, 10);
 
-        return plain;
+        return outState;
     }
 }

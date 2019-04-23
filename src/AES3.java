@@ -2,53 +2,53 @@ public class AES3 extends AES
 {
     public AES3()
     {
-        avalanche = new int[10];
+        super();
     }
 
-    public int[][] encode(int[][] plain)
+    public int[][] encode(int[][] inState, int[][] keyBlock)
     {
-        Round round = new Round();
+        Round round = new Round(keyBlock);
 
-        int[][] cipher = round.addKey(plain);
+        int[][] outState = round.addKey(inState, 0);
 
         for(int i = 0; i < 9; i++)
         {
-            plain = cipher;
-            cipher = round.subBytes(cipher);
-            cipher = round.shiftRows(cipher);
+            inState = outState;
+            outState = round.subBytes(outState);
+            outState = round.shiftRows(outState);
 
-            cipher = round.addKey(cipher);
-            compareBits(i, plain, cipher);
+            outState = round.addKey(outState, i + 1);
+            compareBits(i, inState, outState);
         }
 
-        plain = cipher;
-        cipher = round.subBytes(cipher);
-        cipher = round.shiftRows(cipher);
-        cipher = round.addKey(cipher);
+        inState = outState;
+        outState = round.subBytes(outState);
+        outState = round.shiftRows(outState);
+        outState = round.addKey(outState, 10);
 
-        compareBits(10, plain, cipher);
+        compareBits(10, inState, outState);
 
-        return cipher;
+        return outState;
     }
 
-    public int[][] decode(int[][] cipher)
+    public int[][] decode(int[][] inState, int[][] keyBlock)
     {
-        Round round = new Round(true);
+        Round round = new Round(keyBlock, true);
 
-        int[][] plain = round.addKey(cipher);
+        int[][] outState = round.addKey(inState, 0);
 
         for(int i = 0; i < 9; i++)
         {
-            plain = round.shiftRows(plain);
-            plain = round.subBytes(plain);
-            plain = round.addKey(plain);
+            outState = round.shiftRows(outState);
+            outState = round.subBytes(outState);
+            outState = round.addKey(outState, i + 1);
 
         }
 
-        plain = round.shiftRows(plain);
-        plain = round.subBytes(plain);
-        plain = round.addKey(plain);
+        outState = round.shiftRows(outState);
+        outState = round.subBytes(outState);
+        outState = round.addKey(outState, 10);
 
-        return plain;
+        return outState;
     }
 }

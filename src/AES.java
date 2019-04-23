@@ -2,13 +2,13 @@ public abstract class AES
 {
     protected int[] avalanche;
 
-    abstract int[][] encode(int[][] plain);
-    abstract int[][] decode(int[][] cipher);
-
-    public void expandKey(int[][] key)
+    public AES()
     {
-
+        avalanche = new int[10];
     }
+
+    abstract int[][] encode(int[][] inState, int[][] keyBlock);
+    abstract int[][] decode(int[][] inState, int[][] keyBlock);
 
     public void compareBits(int round, int[][] preRound, int[][] postRound)
     {

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Arrays;
 
 public class Application
 {
@@ -9,13 +10,7 @@ public class Application
     {
         long time = System.currentTimeMillis();
 
-        AES[] version = new AES[5];
-
-        version[0] = new AES0();
-        version[1] = new AES1();
-        version[2] = new AES2();
-        version[3] = new AES3();
-        version[4] = new AES4();
+        AES[] version = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
 
         String inputText = "";
         String keyText = "";
@@ -46,6 +41,7 @@ public class Application
         System.out.println("Running time: " + time + "ms");
         outputResult("P", version);
         outputResult("K", version);
+
         //System.out.println(String.format("%1$02X", Sbox.Sbox[0][0]));
     }
 
@@ -65,14 +61,21 @@ public class Application
         }
 
         System.out.println(String.format("%1$-7s%2$6s%3$6s%4$6s%5$6s%6$6s", "Round", "AES0", "AES1", "AES2", "AES3", "AES4"));
+
+        System.out.println(
+                String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d",
+                        0, version[0].getAvalanche()[9], version[1].getAvalanche()[9],
+                        version[2].getAvalanche()[9], version[3].getAvalanche()[9],
+                        version[4].getAvalanche()[9]));
         for(int i = 0; i < version[0].getAvalanche().length; i++)
         {
             System.out.println(
                     String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d",
-                            i, version[0].getAvalanche()[i], version[1].getAvalanche()[i],
+                            i+1, version[0].getAvalanche()[i], version[1].getAvalanche()[i],
                             version[2].getAvalanche()[i], version[3].getAvalanche()[i],
                             version[4].getAvalanche()[i]));
         }
+
     }
 
     /**
@@ -88,7 +91,7 @@ public class Application
         {
             for(int j = 0; j < 4; j++)
             {
-                decimal[i][j] = Integer.parseInt(input.substring(k * 8, k * 8 + 8), 2);
+                decimal[j][i] = Integer.parseInt(input.substring(k * 8, k * 8 + 8), 2);
                 k++;
                 //bytes[i] = String.format("%1$02X", decimal);
             }
