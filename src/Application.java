@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
 
 public class Application
 {
@@ -48,22 +47,14 @@ public class Application
         System.out.println(Arrays.toString(inputBlock[3]));
 
         System.out.println();
+*/
+        /*Round test = new Round(keyBlock);
 
-        Round test = new Round(keyBlock);
-        test.subBytes(inputBlock);
-        System.out.println(Arrays.toString(inputBlock[0]));
-        System.out.println(Arrays.toString(inputBlock[1]));
-        System.out.println(Arrays.toString(inputBlock[2]));
-        System.out.println(Arrays.toString(inputBlock[3]));
+        int[][] testBlock = {{0x87, 0xF2, 0x4D, 0x97},
+                {0x6E, 0x4C, 0x90, 0xEC},
+                {0x46, 0xE7, 0x4A, 0xC3},
+                {0xA6, 0x8C, 0xD8, 0x95}};*/
 
-        System.out.println();
-
-        test = new Round(keyBlock, true);
-        test.subBytes(inputBlock);
-        System.out.println(Arrays.toString(inputBlock[0]));
-        System.out.println(Arrays.toString(inputBlock[1]));
-        System.out.println(Arrays.toString(inputBlock[2]));
-        System.out.println(Arrays.toString(inputBlock[3]));*/
 
         //System.out.println(String.format("%1$02X", Sbox.Sbox[0][0]));
     }
