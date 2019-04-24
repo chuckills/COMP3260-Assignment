@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Arrays;
 
 public class Application
 {
@@ -57,6 +58,10 @@ public class Application
 
 
         //System.out.println(String.format("%1$02X", Sbox.Sbox[0][0]));
+        Round test = new Round(keyBlock);
+        System.out.println();
+        for(int i = 0; i < Round.getKeySchedule().length; i++)
+            System.out.println(Arrays.toString(Round.getKeySchedule()[i]));
     }
 
     /**

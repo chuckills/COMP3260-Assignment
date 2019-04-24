@@ -10,7 +10,12 @@ public class Round
     public Round(int[][] keyBlock)
     {
         decrypt = false;
-        expandKey();
+        expandKey(keyBlock);
+    }
+
+    public static int[][] getKeySchedule()
+    {
+        return keySchedule;
     }
 
     /**
@@ -21,15 +26,96 @@ public class Round
     public Round(int[][] keyBlock, boolean decrypt)
     {
         this.decrypt = decrypt;
-        expandKey();
+        expandKey(keyBlock);
     }
 
     /**
      *
      */
-    private static void expandKey()
+    private static void expandKey(int[][] keyBlock)
     {
+        keySchedule = new int[44][4];
+        for(int i = 0; i < 4; i++)
+        {
+            System.arraycopy(keyBlock[i], 0, keySchedule[i], 0, 4);
+        }
 
+        int[] temp = new int[4];
+        for(int i = 4; i < 44; i++)
+        {
+            System.arraycopy(keySchedule[i-1], 0, temp, 0, 4);
+            if(i % 4 == 0)
+            {
+                int[] rCon = new int[]{0x00, 0x00, 0x00, 0x00};
+                switch(i)
+                {
+                    case(4):
+                        rCon[0] = 0x01;
+                        break;
+                    case(8):
+                        rCon[0] = 0x02;
+                        break;
+                    case(12):
+                        rCon[0] = 0x04;
+                        break;
+                    case(16):
+                        rCon[0] = 0x08;
+                        break;
+                    case(20):
+                        rCon[0] = 0x10;
+                        break;
+                    case(24):
+                        rCon[0] = 0x20;
+                        break;
+                    case(28):
+                        rCon[0] = 0x40;
+                        break;
+                    case(32):
+                        rCon[0] = 0x80;
+                        break;
+                    case(36):
+                        rCon[0] = 0x1B;
+                        break;
+                    case(40):
+                        rCon[0] = 0x36;
+                        break;
+                }
+                temp = subWord(rotWord(temp));
+
+                temp = new int[]{temp[0]^rCon[0], temp[1]^rCon[1], temp[2]^rCon[2], temp[3]^rCon[3],};
+
+            }
+            keySchedule[i] = new int[] {keySchedule[i-4][0]^temp[0], keySchedule[i-4][1]^temp[1], keySchedule[i-4][2]^temp[2], keySchedule[i-4][3]^temp[3],};
+        }
+    }
+
+    private static int[] rotWord(int[] word)
+    {
+        int shift;
+
+        shift = word[0];
+        word[0] = word[1];
+        word[1] = word[2];
+        word[2] = word[3];
+        word[3] = shift;
+
+        return word;
+    }
+
+    private static int[] subWord(int[] word)
+    {
+        int row;
+        int col;
+
+        for(int j = 0; j < word.length; j++)
+        {
+            String address = String.format("%1$02X", word[j]);
+            row = Integer.valueOf(address.substring(0, 1), 16);
+            col = Integer.valueOf(address.substring(1), 16);
+            word[j] = SBox.SBOX[row][col];
+        }
+
+        return word;
     }
 
     /**
