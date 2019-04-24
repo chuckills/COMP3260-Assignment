@@ -28,15 +28,27 @@ public class Application
         int[][] inputBlock = getBlock(inputText);
         int[][] keyBlock = getBlock(keyText);
 
-        version[0].compareBits(0, inputBlock, keyBlock);
+        int[][] cipherBlock = version[0].encode(inputBlock, keyBlock);
 
         time = System.currentTimeMillis() - time;
+
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < 4; i++)
+        {
+            for(int j = 0; j < 4; j++)
+            {
+                sb.append(String.format("%8s", Integer.toBinaryString(cipherBlock[i][j])).replace(' ', '0'));
+            }
+        }
+
+        String cipherText = sb.toString();
 
         System.out.println("ENCRYPTION");
 
         System.out.println("Plaintext P: " + inputText);
         System.out.println("Key K: " + keyText);
-        System.out.println("Ciphertext C: " + "");
+        System.out.println("Ciphertext C: " + cipherText);
 
         System.out.println("Running time: " + time + "ms");
         outputResult("P", version);
@@ -58,10 +70,6 @@ public class Application
 
 
         //System.out.println(String.format("%1$02X", Sbox.Sbox[0][0]));
-        Round test = new Round(keyBlock);
-        System.out.println();
-        for(int i = 0; i < Round.getKeySchedule().length; i++)
-            System.out.println(Arrays.toString(Round.getKeySchedule()[i]));
     }
 
     /**

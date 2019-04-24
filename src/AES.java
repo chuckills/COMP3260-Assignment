@@ -23,7 +23,7 @@ public abstract class AES
                 {
                     if(binaryDifference.charAt(k) == '1')
                     {
-                        avalanche[round]++;
+                        avalanche[round-1]++;
                     }
                 }
             }

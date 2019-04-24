@@ -44,6 +44,7 @@ public class Round
         for(int i = 4; i < 44; i++)
         {
             System.arraycopy(keySchedule[i-1], 0, temp, 0, 4);
+
             if(i % 4 == 0)
             {
                 int[] rCon = new int[]{0x00, 0x00, 0x00, 0x00};
@@ -238,15 +239,87 @@ public class Round
      */
     public int[][] addKey(int[][] inState, int round)
     {
-        int[][] outState = inState;
-
+        int[][] outState = new int[4][4];
+        int keyOffset = 0;
         if(!decrypt)
         {
-
+            switch(round)
+            {
+                case(1):
+                    keyOffset = 0;
+                    break;
+                case(2):
+                    keyOffset = 4;
+                    break;
+                case(3):
+                    keyOffset = 8;
+                    break;
+                case(4):
+                    keyOffset = 12;
+                    break;
+                case(5):
+                    keyOffset = 16;
+                    break;
+                case(6):
+                    keyOffset = 20;
+                    break;
+                case(7):
+                    keyOffset = 24;
+                    break;
+                case(8):
+                    keyOffset = 28;
+                    break;
+                case(9):
+                    keyOffset = 32;
+                    break;
+                case(10):
+                    keyOffset = 36;
+                    break;
+            }
         }
         else
         {
+            switch(round)
+            {
+                case(1):
+                    keyOffset = 36;
+                    break;
+                case(2):
+                    keyOffset = 32;
+                    break;
+                case(3):
+                    keyOffset = 28;
+                    break;
+                case(4):
+                    keyOffset = 24;
+                    break;
+                case(5):
+                    keyOffset = 20;
+                    break;
+                case(6):
+                    keyOffset = 16;
+                    break;
+                case(7):
+                    keyOffset = 12;
+                    break;
+                case(8):
+                    keyOffset = 8;
+                    break;
+                case(9):
+                    keyOffset = 4;
+                    break;
+                case(10):
+                    keyOffset = 0;
+                    break;
+            }
+        }
 
+        for(int i = 0; i < 4; i++)
+        {
+            for(int j = 0; j < 4; j++)
+            {
+                outState[i][j] = inState[i][j]^keySchedule[i+keyOffset][j];
+            }
         }
 
         return outState;

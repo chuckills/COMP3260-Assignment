@@ -9,7 +9,7 @@ public class AES0 extends AES
     {
         Round round = new Round(keyBlock);
 
-        int[][] outState = round.addKey(inState, 0);
+        int[][] outState = round.addKey(inState, 1);
 
         for(int i = 0; i < 9; i++)
         {
@@ -18,15 +18,15 @@ public class AES0 extends AES
             outState = round.shiftRows(outState);
             outState = round.mixCols(outState);
             outState = round.addKey(outState, i + 1);
-            compareBits(i, inState, outState);
+            //compareBits(i+1, inState, outState);
         }
 
         inState = outState;
         outState = round.subBytes(outState);
         outState = round.shiftRows(outState);
-        outState = round.addKey(outState, 0);
+        outState = round.addKey(outState, 10);
 
-        compareBits(10, inState, outState);
+        //compareBits(10, inState, outState);
 
         return outState;
     }
@@ -35,7 +35,7 @@ public class AES0 extends AES
     {
         Round round = new Round(keyBlock, true);
 
-        int[][] outState = round.addKey(inState, 0);
+        int[][] outState = round.addKey(inState, 1);
 
         for(int i = 0; i < 9; i++)
         {
