@@ -27,9 +27,6 @@ public class Application
         int[][] plainBlock = getBlockFromBinary(plainText);
         int[][] keyBlock = getBlockFromBinary(keyText);
 
-        /*int[][] plainBlock = getBlockFromHex(plainText);
-        int[][] keyBlock = getBlockFromHex(keyText);*/
-
         switch(function.toLowerCase())
         {
             case("--encrypt"):
