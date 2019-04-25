@@ -1,12 +1,26 @@
+/**
+ *
+ */
 public class AES0 extends AES
 {
+    /**
+     *
+     */
     public AES0()
     {
         super();
     }
 
+    /**
+     *
+     * @param inState
+     * @param keyBlock
+     */
     public void encode(int[][] inState, int[][] keyBlock)
     {
+
+        // The commented sections are used for testing only //
+
 /////////////////////////////////
         //StringBuilder tempSB = new StringBuilder("Start- ");
 /////////////////////////////////

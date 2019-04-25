@@ -1,3 +1,6 @@
+/**
+ *
+ */
 public class Round
 {
     private boolean decrypt;
@@ -13,11 +16,6 @@ public class Round
         expandKey(keyBlock);
     }
 
-    public static int[][] getKeySchedule()
-    {
-        return keySchedule;
-    }
-
     /**
      *
      * @param keyBlock
@@ -29,8 +27,10 @@ public class Round
         expandKey(keyBlock);
     }
 
+
     /**
      *
+     * @param keyBlock
      */
     private static void expandKey(int[][] keyBlock)
     {
@@ -93,11 +93,21 @@ public class Round
         }
     }
 
+    /**
+     *
+     * @param word
+     * @return
+     */
     private static int[] rotWord(int[] word)
     {
         return new int[] {word[1], word[2], word[3], word[0]};
     }
 
+    /**
+     *
+     * @param word
+     * @return
+     */
     private static int[] subWord(int[] word)
     {
         int row;
@@ -317,6 +327,8 @@ public class Round
                     break;
             }
         }
+
+        // Commented section used for testing only //
 
 /////////////////////////////////
         /*StringBuilder tempSB = new StringBuilder(String.format("KS%1$3s- ", round-1));

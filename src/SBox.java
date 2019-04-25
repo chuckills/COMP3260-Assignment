@@ -1,3 +1,6 @@
+/**
+ *
+ */
 public class SBox
 {
     public static final int[][] SBOX =

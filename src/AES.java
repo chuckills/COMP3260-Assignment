@@ -1,3 +1,6 @@
+/**
+ *
+ */
 public abstract class AES
 {
 
@@ -5,14 +8,27 @@ public abstract class AES
     protected int[] avalanche;
     protected int[][][] roundBlocks;
 
+    /**
+     *
+     */
     public AES()
     {
         avalanche = new int[11];
         roundBlocks = new int [11][4][4];
     }
 
+    /**
+     *
+     * @param inState
+     * @param keyBlock
+     */
     public abstract void encode(int[][] inState, int[][] keyBlock);
 
+    /**
+     *
+     * @param inState
+     * @param keyBlock
+     */
     public void decode(int[][] inState, int[][] keyBlock)
     {
         Round round = new Round(keyBlock, true);
@@ -34,6 +50,12 @@ public abstract class AES
         outBlock = outState;
     }
 
+    /**
+     *
+     * @param round
+     * @param block
+     * @param blockOne
+     */
     public void compareBits(int round, int[][] block, int[][] blockOne)
     {
         String binaryDifference;
@@ -54,21 +76,39 @@ public abstract class AES
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public int[] getAvalanche()
     {
         return avalanche;
     }
 
+    /**
+     *
+     * @param round
+     * @return
+     */
     public int[][] getRoundBlock(int round)
     {
         return roundBlocks[round];
     }
 
+    /**
+     *
+     * @return
+     */
     public int[][] getOutBlock()
     {
         return outBlock;
     }
 
+    /**
+     *
+     * @param block
+     * @return
+     */
     public static String blockToBinary(int[][] block)
     {
         StringBuilder sb = new StringBuilder();
@@ -84,6 +124,11 @@ public abstract class AES
         return sb.toString();
     }
 
+    /**
+     *
+     * @param block
+     * @return
+     */
     public static String blockToHex(int[][] block)
     {
         StringBuilder sb = new StringBuilder();

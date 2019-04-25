@@ -1,9 +1,14 @@
 import java.io.*;
 
+/**
+ *
+ */
 public class Application
 {
     /**
      *
+     * @param file
+     * @param function
      */
     private void run(String file, String function)
     {
@@ -104,6 +109,7 @@ public class Application
     /**
      *
      * @param modified
+     * @param version
      */
     private void outputEncode(String modified, AES[] version)
     {

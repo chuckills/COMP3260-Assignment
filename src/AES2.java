@@ -1,10 +1,21 @@
+/**
+ *
+ */
 public class AES2 extends AES
 {
+    /**
+     *
+     */
     public AES2()
     {
         super();
     }
 
+    /**
+     *
+     * @param inState
+     * @param keyBlock
+     */
     public void encode(int[][] inState, int[][] keyBlock)
     {
         Round round = new Round(keyBlock);
