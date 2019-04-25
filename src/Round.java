@@ -81,7 +81,10 @@ public class Round
                         rCon[0] = 0x36;
                         break;
                 }
-                temp = subWord(rotWord(temp));
+
+                temp = rotWord(temp);
+
+                temp = subWord(temp);
 
                 temp = new int[]{temp[0]^rCon[0], temp[1]^rCon[1], temp[2]^rCon[2], temp[3]^rCon[3],};
 
