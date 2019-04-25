@@ -69,7 +69,7 @@ public abstract class AES
         return outBlock;
     }
 
-    public String blockToBinary()
+    public static String blockToBinary(int[][] block)
     {
         StringBuilder sb = new StringBuilder();
 
@@ -77,7 +77,7 @@ public abstract class AES
         {
             for(int j = 0; j < 4; j++)
             {
-                sb.append(String.format("%8s", Integer.toBinaryString(outBlock[i][j])).replace(' ', '0'));
+                sb.append(String.format("%8s", Integer.toBinaryString(block[j][i])).replace(' ', '0'));
             }
         }
 
@@ -92,7 +92,7 @@ public abstract class AES
         {
             for(int j = 0; j < 4; j++)
             {
-                sb.append(String.format("%2s", Integer.toHexString(block[i][j])).replace(' ', '0'));
+                sb.append(String.format("%2s", Integer.toHexString(block[j][i])).replace(' ', '0'));
             }
         }
 

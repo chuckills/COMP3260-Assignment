@@ -38,8 +38,6 @@ public class Round
         for(int i = 0; i < 4; i++)
         {
             keySchedule[i] = new int []{keyBlock[0][i], keyBlock[1][i], keyBlock[2][i], keyBlock[3][i]};
-
-            //System.arraycopy(keyBlock[i], 0, keySchedule[i], 0, 4);
         }
 
         int[] temp = new int[4];
@@ -85,10 +83,8 @@ public class Round
                 }
 
                 System.arraycopy(rotWord(temp), 0, temp, 0, 4);
-                //temp = rotWord(temp);
 
                 System.arraycopy(subWord(temp), 0, temp, 0, 4);
-                //temp = subWord(temp);
 
                 temp = new int[]{temp[0]^rCon[0], temp[1]^rCon[1], temp[2]^rCon[2], temp[3]^rCon[3],};
 
@@ -322,30 +318,12 @@ public class Round
             }
         }
 
+/////////////////////////////////
+        /*StringBuilder tempSB = new StringBuilder(String.format("KS%1$3s- ", round-1));
         for(int i = 0; i < 4; i++)
-        {
-            System.out.println(String.format("KS%5$3s- %1$02X, %2$02X, %3$02X, %4$02X", keySchedule[keyOffset][i], keySchedule[keyOffset + 1][i], keySchedule[keyOffset + 2][i], keySchedule[keyOffset + 3][i], round-1));
-        }
-
-
-        /*if(round==3)
-        {
-            System.out.println();
-            for(int i = 0; i < 4; i++)
-            {
-                System.out.println(String.format("%1$02X, %2$02X, %3$02X, %4$02X", inState[i][0], inState[i][1], inState[i][2], inState[i][3]));
-            }
-            System.out.println();
-            for(int i = 0; i < 4; i++)
-            {
-                System.out.println(String.format("%1$02X, %2$02X, %3$02X, %4$02X", keySchedule[keyOffset][i], keySchedule[keyOffset + 1][i], keySchedule[keyOffset + 2][i], keySchedule[keyOffset + 3][i]));
-            }
-
-            System.out.println("-----------------------------------------------------------");
-
-        }*/
-
-
+            tempSB.append(String.format("%1$02X%2$02X%3$02X%4$02X", keySchedule[keyOffset][i], keySchedule[keyOffset + 1][i], keySchedule[keyOffset + 2][i], keySchedule[keyOffset + 3][i]));
+        System.out.println(tempSB.toString());*/
+/////////////////////////////////
 
         for(int i = 0; i < 4; i++)
         {
@@ -384,19 +362,15 @@ public class Round
                 value ^= multiply(2, value);
                 break;
             case(0x09):
-                //x×9=(((x×2)×2)×2)+x
                 value ^= multiply(2, multiply(2, multiply(2, value)));
                 break;
             case(0x0B):
-                //x×11=((((x×2)×2)+x)×2)+x
                 value ^= multiply(2, value ^ multiply(2, multiply(2, value)));
                 break;
             case(0x0D):
-                //x×13=((((x×2)+x)×2)×2)+x
                 value ^= multiply(2, multiply(2, value ^ multiply(2, value)));
                 break;
             case(0x0E):
-                //x×14=((((x×2)+x)×2)+x)×2
                 value = multiply(2, value ^ multiply(2, value ^ multiply(2, value)));
                 break;
             default:
