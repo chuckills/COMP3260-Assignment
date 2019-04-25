@@ -37,7 +37,9 @@ public class Round
         keySchedule = new int[44][4];
         for(int i = 0; i < 4; i++)
         {
-            System.arraycopy(keyBlock[i], 0, keySchedule[i], 0, 4);
+            keySchedule[i] = new int []{keyBlock[0][i], keyBlock[1][i], keyBlock[2][i], keyBlock[3][i]};
+
+            //System.arraycopy(keyBlock[i], 0, keySchedule[i], 0, 4);
         }
 
         int[] temp = new int[4];
@@ -82,9 +84,11 @@ public class Round
                         break;
                 }
 
-                temp = rotWord(temp);
+                System.arraycopy(rotWord(temp), 0, temp, 0, 4);
+                //temp = rotWord(temp);
 
-                temp = subWord(temp);
+                System.arraycopy(subWord(temp), 0, temp, 0, 4);
+                //temp = subWord(temp);
 
                 temp = new int[]{temp[0]^rCon[0], temp[1]^rCon[1], temp[2]^rCon[2], temp[3]^rCon[3],};
 
@@ -95,15 +99,7 @@ public class Round
 
     private static int[] rotWord(int[] word)
     {
-        int shift;
-
-        shift = word[0];
-        word[0] = word[1];
-        word[1] = word[2];
-        word[2] = word[3];
-        word[3] = shift;
-
-        return word;
+        return new int[] {word[1], word[2], word[3], word[0]};
     }
 
     private static int[] subWord(int[] word)
@@ -111,15 +107,17 @@ public class Round
         int row;
         int col;
 
+        int[] newWord = new int[4];
+
         for(int j = 0; j < word.length; j++)
         {
             String address = String.format("%1$02X", word[j]);
             row = Integer.valueOf(address.substring(0, 1), 16);
             col = Integer.valueOf(address.substring(1), 16);
-            word[j] = SBox.SBOX[row][col];
+            newWord[j] = SBox.SBOX[row][col];
         }
 
-        return word;
+        return newWord;
     }
 
     /**
@@ -278,6 +276,10 @@ public class Round
                 case(10):
                     keyOffset = 36;
                     break;
+                case(11):
+                    keyOffset = 40;
+                    break;
+
             }
         }
         else
@@ -285,33 +287,36 @@ public class Round
             switch(round)
             {
                 case(1):
-                    keyOffset = 36;
+                    keyOffset = 40;
                     break;
                 case(2):
-                    keyOffset = 32;
+                    keyOffset = 36;
                     break;
                 case(3):
-                    keyOffset = 28;
+                    keyOffset = 32;
                     break;
                 case(4):
-                    keyOffset = 24;
+                    keyOffset = 28;
                     break;
                 case(5):
-                    keyOffset = 20;
+                    keyOffset = 24;
                     break;
                 case(6):
-                    keyOffset = 16;
+                    keyOffset = 20;
                     break;
                 case(7):
-                    keyOffset = 12;
+                    keyOffset = 16;
                     break;
                 case(8):
-                    keyOffset = 8;
+                    keyOffset = 12;
                     break;
                 case(9):
-                    keyOffset = 4;
+                    keyOffset = 8;
                     break;
                 case(10):
+                    keyOffset = 4;
+                    break;
+                case(11):
                     keyOffset = 0;
                     break;
             }
@@ -319,9 +324,34 @@ public class Round
 
         for(int i = 0; i < 4; i++)
         {
+            System.out.println(String.format("KS%5$3s- %1$02X, %2$02X, %3$02X, %4$02X", keySchedule[keyOffset][i], keySchedule[keyOffset + 1][i], keySchedule[keyOffset + 2][i], keySchedule[keyOffset + 3][i], round-1));
+        }
+
+
+        /*if(round==3)
+        {
+            System.out.println();
+            for(int i = 0; i < 4; i++)
+            {
+                System.out.println(String.format("%1$02X, %2$02X, %3$02X, %4$02X", inState[i][0], inState[i][1], inState[i][2], inState[i][3]));
+            }
+            System.out.println();
+            for(int i = 0; i < 4; i++)
+            {
+                System.out.println(String.format("%1$02X, %2$02X, %3$02X, %4$02X", keySchedule[keyOffset][i], keySchedule[keyOffset + 1][i], keySchedule[keyOffset + 2][i], keySchedule[keyOffset + 3][i]));
+            }
+
+            System.out.println("-----------------------------------------------------------");
+
+        }*/
+
+
+
+        for(int i = 0; i < 4; i++)
+        {
             for(int j = 0; j < 4; j++)
             {
-                outState[i][j] = inState[i][j]^keySchedule[i+keyOffset][j];
+                outState[i][j] = inState[i][j]^keySchedule[j+keyOffset][i];
             }
         }
 

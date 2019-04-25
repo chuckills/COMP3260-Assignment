@@ -13,21 +13,22 @@ public class AES1 extends AES
 
         int[][] outState = round.addKey(inState, 1);
 
-        for(int i = 0; i < 9; i++)
+        for(int i = 1; i < 10; i++)
         {
 
             outState = round.shiftRows(outState);
             outState = round.mixCols(outState);
             outState = round.addKey(outState, i + 1);
-            System.arraycopy(outState, 0, roundBlocks[i+1], 0, outState.length);
+
+            System.arraycopy(outState, 0, roundBlocks[i], 0, outState.length);
         }
-        inState = outState;
+
 
         outState = round.shiftRows(outState);
-        outState = round.addKey(outState, 10);
+        outState = round.addKey(outState, 11);
 
         System.arraycopy(outState, 0, roundBlocks[10], 0, outState.length);
 
-        outBlock =  outState;
+        outBlock = outState;
     }
 }

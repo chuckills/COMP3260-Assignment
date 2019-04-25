@@ -24,10 +24,10 @@ public class Application
         /*String plainText1 = swapLeftBit(plainText);
         String keyText1 = swapLeftBit(keyText);*/
 
-        /*int[][] plainBlock = getBlockFromBinary(plainText);
-        int[][] keyBlock = getBlockFromBinary(keyText);*/
-        int[][] plainBlock = getBlockFromHex(plainText);
-        int[][] keyBlock = getBlockFromHex(keyText);
+        int[][] plainBlock = getBlockFromHex("00112233445566778899aabbccddeeff");//plainText);
+        int[][] keyBlock = getBlockFromHex("000102030405060708090a0b0c0d0e0f");//keyText);
+        /*int[][] plainBlock = getBlockFromHex(plainText);
+        int[][] keyBlock = getBlockFromHex(keyText);*/
 
 /*
         for(int i = 0; i < 4; i++)
@@ -47,11 +47,10 @@ public class Application
                 AES[] versions = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
 
                 /*AES[] comparisonP = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
-                AES[] comparisonK = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
+                AES[] comparisonK = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};*/
 
-                int[][] plainBlock1 = getBlock(plainText1);
-
-                int[][] keyBlock1 = getBlock(keyText1);*/
+                /*int[][] plainBlock1 = getBlockFromBinary(plainText1);
+                int[][] keyBlock1 = getBlockFromBinary(keyText1);*/
 
                 /*Round test = new Round(keyBlock);
 
@@ -64,24 +63,26 @@ public class Application
                     System.out.println(String.format("%1$02X, %2$02X, %3$02X, %4$02X", key[i][0], key[i][1], key[i][2], key[i][3]));
                 }*/
 
-                for(int i = 0; i < 5; i++)
+                /*for(int i = 0; i < 5; i++)
                 {
                     versions[i].encode(plainBlock, keyBlock);
-                    /*comparisonP[i].encode(plainBlock1, keyBlock);
-                    comparisonK[i].encode(plainBlock, keyBlock1);*/
+                    comparisonP[i].encode(plainBlock1, keyBlock);
+                    comparisonK[i].encode(plainBlock, keyBlock1);
                     for(int j = 0; j < 11; j++)
                     {
-                        /*comparisonP[i].compareBits(j, versions[i].getRoundBlock(j), comparisonP[i].getRoundBlock(j));
-                        comparisonK[i].compareBits(j, versions[i].getRoundBlock(j), comparisonK[i].getRoundBlock(j));*/
+                        comparisonP[i].compareBits(j, versions[i].getRoundBlock(j), comparisonP[i].getRoundBlock(j));
+                        comparisonK[i].compareBits(j, versions[i].getRoundBlock(j), comparisonK[i].getRoundBlock(j));
                     }
-                }
+                }*/
+
+                versions[0].encode(plainBlock, keyBlock);
 
                 time = System.currentTimeMillis() - time;
 
                 System.out.println("ENCRYPTION");
 
-                System.out.println("Plaintext P: " + AES.blockToHex(plainBlock));
-                System.out.println("Key K: " + AES.blockToHex(keyBlock));
+                System.out.println("Plaintext P: " + plainText);
+                System.out.println("Key K: " + keyText);
                 System.out.println("Ciphertext C: " + AES.blockToHex(versions[0].getOutBlock()));
 
                 System.out.println("Running time: " + time + "ms");
