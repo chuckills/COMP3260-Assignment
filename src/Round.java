@@ -117,10 +117,10 @@ public class Round
 
         for(int j = 0; j < word.length; j++)
         {
-            String address = String.format("%1$02X", word[j]);
+            /*String address = String.format("%1$02X", word[j]);
             row = Integer.valueOf(address.substring(0, 1), 16);
-            col = Integer.valueOf(address.substring(1), 16);
-            newWord[j] = SBox.SBOX[row][col];
+            col = Integer.valueOf(address.substring(1), 16);*/
+            newWord[j] = SBox.SBOX.get(word[j]);//SBox.SBOX[row][col];
         }
 
         return newWord;
@@ -142,10 +142,10 @@ public class Round
             {
                 for(int j = 0; j < inState[i].length; j++)
                 {
-                    String address = String.format("%1$02X", inState[i][j]);
+                    /*String address = String.format("%1$02X", inState[i][j]);
                     row = Integer.valueOf(address.substring(0, 1), 16);
-                    col = Integer.valueOf(address.substring(1), 16);
-                    inState[i][j] = SBox.SBOX[row][col];
+                    col = Integer.valueOf(address.substring(1), 16);*/
+                    inState[i][j] = SBox.SBOX.get(inState[i][j]);//SBox.SBOX[row][col];
                 }
             }
         }
@@ -155,10 +155,10 @@ public class Round
             {
                 for(int j = 0; j < inState[i].length; j++)
                 {
-                    String address = String.format("%1$02X", inState[i][j]);
+                    /*String address = String.format("%1$02X", inState[i][j]);
                     row = Integer.valueOf(address.substring(0, 1), 16);
-                    col = Integer.valueOf(address.substring(1), 16);
-                    inState[i][j] = SBox.I_SBOX[row][col];
+                    col = Integer.valueOf(address.substring(1), 16);*/
+                    inState[i][j] = SBox.ISBOX.get(inState[i][j]);//inState[i][j] = SBox.I_SBOX[row][col];
                 }
             }
         }

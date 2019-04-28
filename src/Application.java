@@ -56,8 +56,6 @@ public class Application
                     }
                 }
 
-                versions[0].encode(plainBlock, keyBlock);
-
                 time = System.currentTimeMillis() - time;
 
                 System.out.println("ENCRYPTION");
