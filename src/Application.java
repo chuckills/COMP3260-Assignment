@@ -32,58 +32,71 @@ public class Application
         int[][] plainBlock = getBlockFromBinary(plainText);
         int[][] keyBlock = getBlockFromBinary(keyText);
 
-        switch(function.toLowerCase())
+        try(PrintWriter out = new PrintWriter("AESoutput.txt"))
         {
-            case("--encrypt"):
-            case("--encode"):
-                AES[] versions = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
+            StringBuilder outText = new StringBuilder();
 
-                AES[] comparisonP = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
-                AES[] comparisonK = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
+            switch(function.toLowerCase())
+            {
+                case ("--encrypt"):
+                case ("--encode"):
+                    AES[] versions = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
 
-                int[][] plainBlock1 = getBlockFromBinary(plainText1);
-                int[][] keyBlock1 = getBlockFromBinary(keyText1);
+                    AES[] comparisonP = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
+                    AES[] comparisonK = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
 
-                for(int i = 0; i < 5; i++)
-                {
-                    versions[i].encode(plainBlock, keyBlock);
-                    comparisonP[i].encode(plainBlock1, keyBlock);
-                    comparisonK[i].encode(plainBlock, keyBlock1);
-                    for(int j = 0; j < 11; j++)
+                    int[][] plainBlock1 = getBlockFromBinary(plainText1);
+                    int[][] keyBlock1 = getBlockFromBinary(keyText1);
+
+                    for(int i = 0; i < 5; i++)
                     {
-                        comparisonP[i].compareBits(j, versions[i].getRoundBlock(j), comparisonP[i].getRoundBlock(j));
-                        comparisonK[i].compareBits(j, versions[i].getRoundBlock(j), comparisonK[i].getRoundBlock(j));
+                        versions[i].encode(plainBlock, keyBlock);
+                        comparisonP[i].encode(plainBlock1, keyBlock);
+                        comparisonK[i].encode(plainBlock, keyBlock1);
+                        for(int j = 0; j < 11; j++)
+                        {
+                            comparisonP[i].compareBits(j, versions[i].getRoundBlock(j), comparisonP[i].getRoundBlock(j));
+                            comparisonK[i].compareBits(j, versions[i].getRoundBlock(j), comparisonK[i].getRoundBlock(j));
+                        }
                     }
-                }
 
-                time = System.currentTimeMillis() - time;
+                    time = System.currentTimeMillis() - time;
 
-                System.out.println("ENCRYPTION");
 
-                System.out.println("Plaintext P: " + plainText);
-                System.out.println("Key K: " + keyText);
-                System.out.println("Ciphertext C: " + AES.blockToBinary(versions[0].getOutBlock()));
 
-                System.out.println("Running time: " + time + "ms");
+                    outText.append("ENCRYPTION\n");
+                    outText.append(String.format("Plaintext P: %1s", plainText));
+                    outText.append(String.format("\nKey K: %1$s", keyText));
+                    outText.append(String.format("\nCiphertext C: %1$s", AES.blockToBinary(versions[0].getOutBlock())));
+                    outText.append(String.format("\nRunning time: %1$sms\n", time));
+                    outText.append("Avalanche: \n");
 
-                outputEncode("P", comparisonP);
-                System.out.println();
-                outputEncode("K", comparisonK);
-                break;
+                    outText.append(outputEncode("P", comparisonP));
+                    outText.append("\n");
+                    outText.append(outputEncode("K", comparisonK));
+                    break;
 
-            case("--decrypt"):
-            case("--decode"):
-                AES decrypt = new AES0();
+                case ("--decrypt"):
+                case ("--decode"):
+                    AES decrypt = new AES0();
 
-                decrypt.decode(plainBlock, keyBlock);
-                System.out.println("DECRYPTION");
+                    decrypt.decode(plainBlock, keyBlock);
 
-                System.out.println("Ciphertext C: " + plainText);
-                System.out.println("Key K: " + keyText);
-                System.out.println("Plaintext P: " + AES.blockToBinary(decrypt.getOutBlock()));
-                break;
-            default:
-                System.out.println("USAGE: java Application [filename] --[encrypt|encode|decrypt|decode]");
+                    outText.append("DECRYPTION\n");
+                    outText.append(String.format("Ciphertext C: %1$s\n", plainText));
+                    outText.append(String.format("Key K: %1$s\n", keyText));
+                    outText.append(String.format("Plaintext P: %1$s\n", AES.blockToBinary(decrypt.getOutBlock())));
+                    break;
+                default:
+                    outText.append("USAGE: java Application [filename] --[encrypt|encode|decrypt|decode]");
+            }
+
+            out.println(outText.toString());
+            System.out.println(outText.toString());
+        }
+        catch(FileNotFoundException FNFe)
+        {
+            System.out.println(FNFe.getMessage());
         }
     }
 
@@ -109,33 +122,37 @@ public class Application
      * @param modified
      * @param version
      */
-    private void outputEncode(String modified, AES[] version)
+    private String outputEncode(String modified, AES[] version)
     {
+        StringBuilder sb = new StringBuilder();
+
         if(modified.equals("P"))
         {
-            System.out.println("P and Pi under K");
+            sb.append("P and Pi under K\n");
         }
         else
         {
-            System.out.println("P under K and Ki");
+            sb.append("P under K and Ki\n");
         }
 
-        System.out.println(String.format("%1$-7s%2$6s%3$6s%4$6s%5$6s%6$6s", "Round", "AES0", "AES1", "AES2", "AES3", "AES4"));
 
-        System.out.println(
-                String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d",
+        sb.append(String.format("%1$-7s%2$6s%3$6s%4$6s%5$6s%6$6s\n", "Round", "AES0", "AES1", "AES2", "AES3", "AES4"));
+
+        sb.append(
+                String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d\n",
                         0, version[0].getAvalanche()[0], version[1].getAvalanche()[0],
                         version[2].getAvalanche()[0], version[3].getAvalanche()[0],
                         version[4].getAvalanche()[0]));
+
         for(int i = 1; i < version[0].getAvalanche().length; i++)
         {
-            System.out.println(
-                    String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d",
+            sb.append(
+                    String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d\n",
                             i, version[0].getAvalanche()[i], version[1].getAvalanche()[i],
                             version[2].getAvalanche()[i], version[3].getAvalanche()[i],
                             version[4].getAvalanche()[i]));
         }
-
+        return sb.toString();
     }
 
     /**
