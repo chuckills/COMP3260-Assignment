@@ -1,6 +1,9 @@
 import java.util.HashMap;
 
-/**
+/** SBox.java
+ *
+ * A simple class containing static lookup tables for AES SBox and ISBox
+ * in a Hashmap
  *
  */
 public class SBox
@@ -8,6 +11,12 @@ public class SBox
     public static final HashMap<Integer, Integer> SBOX = fillSBox();
     public static final HashMap<Integer, Integer> ISBOX = fillISBox();
 
+    /** fillSBox()
+     *
+     * Simply fills the SBox HashMap
+     *
+     * @return - HashMap, a HashMap referenced by the input integer as the key, and takes the value as substitution
+     */
     private static HashMap<Integer, Integer> fillSBox()
     {
         HashMap<Integer, Integer> box = new HashMap<>();
@@ -79,6 +88,12 @@ public class SBox
         return box;
     }
 
+    /** fillISBox()
+     *
+     * Simply fills the ISBox HashMap
+     *
+     * @return - HashMap, a HashMap referenced by the input integer as the key, and takes the value as substitution
+     */
     private static HashMap<Integer, Integer> fillISBox()
     {
         HashMap<Integer, Integer> box = new HashMap<>();
