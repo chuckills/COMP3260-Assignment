@@ -1,4 +1,6 @@
-/**
+/** Round.java
+ *
+ * Contains all methods required for the phases of each round
  *
  */
 public class Round
@@ -6,9 +8,9 @@ public class Round
     private boolean decrypt;
     private static int[][] keySchedule;
 
-    /**
+    /** Constructor for encoding
      *
-     * @param keyBlock
+     * @param keyBlock - int[][], 4x4 integer key
      */
     public Round(int[][] keyBlock)
     {
@@ -16,10 +18,10 @@ public class Round
         expandKey(keyBlock);
     }
 
-    /**
+    /** Constructor for encoding or decoding
      *
-     * @param keyBlock
-     * @param decrypt
+     * @param keyBlock - int[][], 4x4 integer key
+     * @param decrypt - boolean, true if decoding, false if encoding
      */
     public Round(int[][] keyBlock, boolean decrypt)
     {
@@ -28,23 +30,33 @@ public class Round
     }
 
 
-    /**
+    /** expandKey()
      *
-     * @param keyBlock
+     * This method derives 44 32 bit key words from the initial keyblock array
+     *
+     * @param keyBlock - int[][], The initial key array
      */
     private static void expandKey(int[][] keyBlock)
     {
+        // Initialise the key schedule array
         keySchedule = new int[44][4];
+
+        // Populate the first four words with the original key
         for(int i = 0; i < 4; i++)
         {
             keySchedule[i] = new int []{keyBlock[0][i], keyBlock[1][i], keyBlock[2][i], keyBlock[3][i]};
         }
 
+        // Initialise a temporary word
         int[] temp = new int[4];
+
+        // Generate the remaining key words
         for(int i = 4; i < 44; i++)
         {
+            // Copy the word at the previous index to the temporary word
             System.arraycopy(keySchedule[i-1], 0, temp, 0, 4);
 
+            // Get the Round Constant value on every fourth round
             if(i % 4 == 0)
             {
                 int[] rCon = new int[]{0x00, 0x00, 0x00, 0x00};
@@ -82,31 +94,40 @@ public class Round
                         break;
                 }
 
+                // Run RotWord on the temp array
                 System.arraycopy(rotWord(temp), 0, temp, 0, 4);
 
+                // Run SubWord on the temp array
                 System.arraycopy(subWord(temp), 0, temp, 0, 4);
 
+                // XOR the temp array with the Round Constant
                 temp = new int[]{temp[0]^rCon[0], temp[1]^rCon[1], temp[2]^rCon[2], temp[3]^rCon[3],};
 
             }
+
+            // XOR the temp array with the key word 4 indexes lower
             keySchedule[i] = new int[] {keySchedule[i-4][0]^temp[0], keySchedule[i-4][1]^temp[1], keySchedule[i-4][2]^temp[2], keySchedule[i-4][3]^temp[3],};
         }
     }
 
-    /**
+    /** rotWord()
      *
-     * @param word
-     * @return
+     * Performs a 1-byte rotation to the left
+     *
+     * @param word - int[], the word to be rotated
+     * @return - int[], returns word rotated 1-byte to the left
      */
     private static int[] rotWord(int[] word)
     {
         return new int[] {word[1], word[2], word[3], word[0]};
     }
 
-    /**
+    /** subWord()
      *
-     * @param word
-     * @return
+     * Performs an SBox substitution on the word
+     *
+     * @param word - int[], the word to be substituted
+     * @return - int[], returns word after an SBox substitution
      */
     private static int[] subWord(int[] word)
     {
@@ -120,15 +141,19 @@ public class Round
         return newWord;
     }
 
-    /**
+    /** subBytes()
      *
-     * @param inState
-     * @return
+     * Performs a block SBox/ISBox substitution
+     *
+     * @param inState - int[][], The input state block array
+     * @return - int[][], the output block array after substitution
      */
     public int[][] subBytes(int[][] inState)
     {
+        // Choose encrypt or decrypt
         if(!decrypt)
         {
+            // Substitute from SBox
             for(int i = 0; i < inState.length; i++)
             {
                 for(int j = 0; j < inState[i].length; j++)
@@ -139,6 +164,7 @@ public class Round
         }
         else
         {
+            // Substitute from ISBox
             for(int i = 0; i < inState.length; i++)
             {
                 for(int j = 0; j < inState[i].length; j++)
@@ -151,15 +177,17 @@ public class Round
         return inState;
     }
 
-    /**
+    /** shiftRows()
      *
-     * @param inState
-     * @return
+     * @param inState - int[][], The input state block array
+     * @return - int[][], the output block array after row shift
      */
     public int[][] shiftRows(int[][] inState)
     {
+        // Choose encode or decode
         if(!decrypt)
         {
+            // Shift the rows to the left
             for(int i = 0; i < 3; i++)
             {
                 int[] shift = new int[4];
@@ -174,6 +202,7 @@ public class Round
         }
         else
         {
+            // Shift the rows to the right
             for(int i = 0; i < 3; i++)
             {
                 int[] shift = new int[4];
@@ -190,17 +219,19 @@ public class Round
         return inState;
     }
 
-    /**
+    /** mixCols()
      *
-     * @param inState
-     * @return
+     * @param inState - int[][], The input state block array
+     * @return - int[][], the output block array after mixing columns
      */
     public int[][] mixCols(int[][] inState)
     {
         int[][] outState = new int[4][4];
 
+        // Choose encode or decode
         if(!decrypt)
         {
+            // Apply the encoding mix matrix to the input state array
             for(int j = 0; j < 4; j++)
             {
                 outState[0][j] = multiply(0x02, inState[0][j]) ^ multiply(0x03, inState[1][j]) ^ inState[2][j] ^ inState[3][j];
@@ -211,6 +242,7 @@ public class Round
         }
         else
         {
+            // Apply the decoding mix matrix to the input state array
             for(int j = 0; j < 4; j++)
             {
                 outState[0][j] = multiply(0x0E, inState[0][j]) ^ multiply(0x0B, inState[1][j]) ^ multiply(0x0D, inState[2][j]) ^ multiply(0x09, inState[3][j]);
@@ -223,16 +255,18 @@ public class Round
         return outState;
     }
 
-    /**
+    /** addKey()
      *
-     * @param inState
-     * @param round
-     * @return
+     * @param inState - int[][], The input state block array
+     * @param round - int, the current round number
+     * @return - int[][], returns a block after XOR with the round key
      */
     public int[][] addKey(int[][] inState, int round)
     {
         int[][] outState = new int[4][4];
         int keyOffset = 0;
+
+        // Choose encode or decode
         if(!decrypt)
         {
             switch(round)
@@ -270,7 +304,6 @@ public class Round
                 case(11):
                     keyOffset = 40;
                     break;
-
             }
         }
         else
@@ -313,15 +346,7 @@ public class Round
             }
         }
 
-        // Commented section used for testing only //
-
-/////////////////////////////////
-        /*StringBuilder tempSB = new StringBuilder(String.format("KS%1$3s- ", round-1));
-        for(int i = 0; i < 4; i++)
-            tempSB.append(String.format("%1$02X%2$02X%3$02X%4$02X", keySchedule[keyOffset][i], keySchedule[keyOffset + 1][i], keySchedule[keyOffset + 2][i], keySchedule[keyOffset + 3][i]));
-        System.out.println(tempSB.toString());*/
-/////////////////////////////////
-
+        // Add the round key to the current block
         for(int i = 0; i < 4; i++)
         {
             for(int j = 0; j < 4; j++)
@@ -361,18 +386,23 @@ public class Round
                 }
                 break;
             case(0x03):
+                // 3 = 1 + 2
                 value ^= multiply(2, value);
                 break;
             case(0x09):
+                // 9 = 1 + 2 x 2 x 2
                 value ^= multiply(2, multiply(2, multiply(2, value)));
                 break;
             case(0x0B):
+                // B = 1 + 2 x (1 + 2 x 2)
                 value ^= multiply(2, value ^ multiply(2, multiply(2, value)));
                 break;
             case(0x0D):
+                // D = 1 + 2 x (2 x (1 + 2))
                 value ^= multiply(2, multiply(2, value ^ multiply(2, value)));
                 break;
             case(0x0E):
+                // E = 2 x (1 + 2 x (1 + 2))
                 value = multiply(2, value ^ multiply(2, value ^ multiply(2, value)));
                 break;
             default:

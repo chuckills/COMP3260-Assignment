@@ -1,4 +1,8 @@
-/**
+/** AES.java
+ *
+ * Base class for all variations of AES encoding algorithms.
+ * Contains abstract header for encoding algorithm and all
+ * other shared methods for derived classes.
  *
  */
 public abstract class AES
@@ -8,7 +12,7 @@ public abstract class AES
     protected int[] avalanche;
     protected int[][][] roundBlocks;
 
-    /**
+    /** Constructor
      *
      */
     public AES()
