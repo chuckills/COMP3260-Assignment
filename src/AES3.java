@@ -1,9 +1,11 @@
 /** AES3.java
  *
+ * Derived AES class with mixCols missing
+ *
  */
 public class AES3 extends AES
 {
-    /**
+    /** Constructor
      *
      */
     public AES3()

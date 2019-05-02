@@ -1,9 +1,11 @@
 /** AES1.java
  *
+ * Derived AES class with subBytes missing
+ *
  */
 public class AES1 extends AES
 {
-    /**
+    /** Constructor
      *
      */
     public AES1()

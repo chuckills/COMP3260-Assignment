@@ -1,9 +1,11 @@
 /** AES4.java
  *
+ * Derived AES class with addKey missing
+ *
  */
 public class AES4 extends AES
 {
-    /**
+    /** Constructor
      *
      */
     public AES4()

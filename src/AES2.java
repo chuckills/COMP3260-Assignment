@@ -1,9 +1,11 @@
 /** AES2.java
  *
+ * Derived AES class with shiftRows missing
+ *
  */
 public class AES2 extends AES
 {
-    /**
+    /** Constructor
      *
      */
     public AES2()
