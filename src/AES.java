@@ -7,7 +7,6 @@
  */
 public abstract class AES
 {
-
     protected int[][] outBlock;
     protected int[] avalanche;
     protected int[][][] roundBlocks;
@@ -21,24 +20,30 @@ public abstract class AES
         roundBlocks = new int [11][4][4];
     }
 
-    /**
+    /** encode()
      *
-     * @param inState
-     * @param keyBlock
+     * Encodes the input block array with the input key array
+     *
+     * @param inState - int[][], The input state block array
+     * @param keyBlock - int[][], The input key block array
      */
     public abstract void encode(int[][] inState, int[][] keyBlock);
 
-    /**
+    /** decode()
      *
-     * @param inState
-     * @param keyBlock
+     * Decodes the input block array with the input key array
+     *
+     * @param inState - int[][], The input state block array
+     * @param keyBlock - int[][], The input key block array
      */
     public void decode(int[][] inState, int[][] keyBlock)
     {
         Round round = new Round(keyBlock, true);
 
+        // Initial add round key
         int[][] outState = round.addKey(inState, 1);
 
+        // Repeat round phases 10 times
         for(int i = 1; i < 10; i++)
         {
             outState = round.shiftRows(outState);
@@ -47,6 +52,7 @@ public abstract class AES
             outState = round.mixCols(outState);
         }
 
+        // Run final round
         outState = round.shiftRows(outState);
         outState = round.subBytes(outState);
         outState = round.addKey(outState, 11);
@@ -54,11 +60,13 @@ public abstract class AES
         outBlock = outState;
     }
 
-    /**
+    /** compareBits()
      *
-     * @param round
-     * @param block
-     * @param blockOne
+     * Counts the number of bits that differ between two block arrays
+     *
+     * @param round - int, the current round number
+     * @param block - int[][], the input block array
+     * @param blockOne - int[][], the block to compare
      */
     public void compareBits(int round, int[][] block, int[][] blockOne)
     {
@@ -68,7 +76,10 @@ public abstract class AES
         {
             for(int j = 0; j < 4; j++)
             {
+                // XOR corresponding cells and convert to a binary string
                 binaryDifference = Integer.toBinaryString(block[i][j] ^ blockOne[i][j]);
+
+                // Count the number of 1s in the string
                 for(int k = 0; k < binaryDifference.length(); k++)
                 {
                     if(binaryDifference.charAt(k) == '1')
@@ -80,38 +91,46 @@ public abstract class AES
         }
     }
 
-    /**
+    /** getAvalanche()
      *
-     * @return
+     * Gets the array of differences for this version of the algorithm
+     *
+     * @return - int[], an array of difference counts for each round
      */
     public int[] getAvalanche()
     {
         return avalanche;
     }
 
-    /**
+    /** getRoundBlock
      *
-     * @param round
-     * @return
+     * Gets the block that is the result of the specified round number
+     *
+     * @param round - int, the current round number
+     * @return - int[][], returns the resultant block array from the specified round number
      */
     public int[][] getRoundBlock(int round)
     {
         return roundBlocks[round];
     }
 
-    /**
+    /** getOutBlock()
      *
-     * @return
+     * Gets the final block to return from the algorithm
+     *
+     * @return - int[][], returns the final resultant array of the algorithm
      */
     public int[][] getOutBlock()
     {
         return outBlock;
     }
 
-    /**
+    /** blockToBinary()
      *
-     * @param block
-     * @return
+     * Converts the block array to a binary string
+     *
+     * @param block - int[][], the input block array
+     * @return - String, returns a 128 bit binary string
      */
     public static String blockToBinary(int[][] block)
     {
@@ -128,10 +147,12 @@ public abstract class AES
         return sb.toString();
     }
 
-    /**
+    /** blockToHex()
      *
-     * @param block
-     * @return
+     * Converts the block array to a hexadecimal string
+     *
+     * @param block - int[][], the input block array
+     * @return - String returns a 128 bit hexadecimal string
      */
     public static String blockToHex(int[][] block)
     {
