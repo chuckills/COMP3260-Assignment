@@ -333,11 +333,13 @@ public class Round
         return outState;
     }
 
-    /**
+    /** multiply()
      *
-     * @param multiplier
-     * @param value
-     * @return
+     * Performs the mixCols matrix multiplication calculations using the shortcut in the text
+     *
+     * @param multiplier - int, The number of times to multiply by
+     * @param value - int, The value to be multiplied
+     * @return - int, returns the required result of the multiplication
      */
     private int multiply(int multiplier, int value)
     {
@@ -346,12 +348,15 @@ public class Round
             case(0x02):
                 if(value >= 128)
                 {
+                    // Shift bits left by 1 to multiply by 2
                     value <<= 1;
-                    value -= 256;
-                    value ^= 0x1B;
+
+                    // XOR with int equivalent to x^8 + x^4 + x^3 + x + 1
+                    value ^= 0x11B;
                 }
                 else
                 {
+                    // Shift bits left by 1 to multiply by 2
                     value <<= 1;
                 }
                 break;

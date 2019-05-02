@@ -6,10 +6,9 @@ import java.util.HashMap;
 public class SBox
 {
     public static final HashMap<Integer, Integer> SBOX = fillSBox();
-
     public static final HashMap<Integer, Integer> ISBOX = fillISBox();
 
-    public static HashMap<Integer, Integer> fillSBox()
+    private static HashMap<Integer, Integer> fillSBox()
     {
         HashMap<Integer, Integer> box = new HashMap<>();
 
