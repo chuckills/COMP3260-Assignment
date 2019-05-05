@@ -59,40 +59,7 @@ public class Round
             // Get the Round Constant value on every fourth round
             if(i % 4 == 0)
             {
-                int[] rCon = new int[]{0x00, 0x00, 0x00, 0x00};
-                switch(i)
-                {
-                    case(4):
-                        rCon[0] = 0x01;
-                        break;
-                    case(8):
-                        rCon[0] = 0x02;
-                        break;
-                    case(12):
-                        rCon[0] = 0x04;
-                        break;
-                    case(16):
-                        rCon[0] = 0x08;
-                        break;
-                    case(20):
-                        rCon[0] = 0x10;
-                        break;
-                    case(24):
-                        rCon[0] = 0x20;
-                        break;
-                    case(28):
-                        rCon[0] = 0x40;
-                        break;
-                    case(32):
-                        rCon[0] = 0x80;
-                        break;
-                    case(36):
-                        rCon[0] = 0x1B;
-                        break;
-                    case(40):
-                        rCon[0] = 0x36;
-                        break;
-                }
+                int[] rCon = new int[]{0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36};
 
                 // Run RotWord on the temp array
                 System.arraycopy(rotWord(temp), 0, temp, 0, 4);
@@ -101,12 +68,11 @@ public class Round
                 System.arraycopy(subWord(temp), 0, temp, 0, 4);
 
                 // XOR the temp array with the Round Constant
-                temp = new int[]{temp[0]^rCon[0], temp[1]^rCon[1], temp[2]^rCon[2], temp[3]^rCon[3],};
-
+                temp = new int[]{temp[0]^rCon[i/4-1], temp[1], temp[2], temp[3]};
             }
 
             // XOR the temp array with the key word 4 indexes lower
-            keySchedule[i] = new int[] {keySchedule[i-4][0]^temp[0], keySchedule[i-4][1]^temp[1], keySchedule[i-4][2]^temp[2], keySchedule[i-4][3]^temp[3],};
+            keySchedule[i] = new int[] {keySchedule[i-4][0]^temp[0], keySchedule[i-4][1]^temp[1], keySchedule[i-4][2]^temp[2], keySchedule[i-4][3]^temp[3]};
         }
     }
 
@@ -269,81 +235,14 @@ public class Round
         // Choose encode or decode
         if(!decrypt)
         {
-            switch(round)
-            {
-                case(1):
-                    keyOffset = 0;
-                    break;
-                case(2):
-                    keyOffset = 4;
-                    break;
-                case(3):
-                    keyOffset = 8;
-                    break;
-                case(4):
-                    keyOffset = 12;
-                    break;
-                case(5):
-                    keyOffset = 16;
-                    break;
-                case(6):
-                    keyOffset = 20;
-                    break;
-                case(7):
-                    keyOffset = 24;
-                    break;
-                case(8):
-                    keyOffset = 28;
-                    break;
-                case(9):
-                    keyOffset = 32;
-                    break;
-                case(10):
-                    keyOffset = 36;
-                    break;
-                case(11):
-                    keyOffset = 40;
-                    break;
-            }
+
+            int[] roundOffset = {0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40};
+            keyOffset = roundOffset[round-1];
         }
         else
         {
-            switch(round)
-            {
-                case(1):
-                    keyOffset = 40;
-                    break;
-                case(2):
-                    keyOffset = 36;
-                    break;
-                case(3):
-                    keyOffset = 32;
-                    break;
-                case(4):
-                    keyOffset = 28;
-                    break;
-                case(5):
-                    keyOffset = 24;
-                    break;
-                case(6):
-                    keyOffset = 20;
-                    break;
-                case(7):
-                    keyOffset = 16;
-                    break;
-                case(8):
-                    keyOffset = 12;
-                    break;
-                case(9):
-                    keyOffset = 8;
-                    break;
-                case(10):
-                    keyOffset = 4;
-                    break;
-                case(11):
-                    keyOffset = 0;
-                    break;
-            }
+            int[] roundOffset = {40, 36, 32, 28, 24, 20, 16, 12, 8, 4, 0};
+            keyOffset = roundOffset[round-1];
         }
 
         // Add the round key to the current block
