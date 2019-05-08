@@ -1,3 +1,10 @@
+/*
+======================================================
+COMP3260 Assignment 2
+Gregory Choice(c9311718) & Christopher Booth(c3229932)
+======================================================
+*/
+
 /** AES2.java
  *
  * Derived AES class with shiftRows missing

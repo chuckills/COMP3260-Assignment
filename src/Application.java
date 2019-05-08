@@ -1,5 +1,12 @@
 import java.io.*;
 
+/*
+======================================================
+COMP3260 Assignment 2
+Gregory Choice(c9311718) & Christopher Booth(c3229932)
+======================================================
+*/
+
 /** Application.java
  *
  * This is the main runnable class for COMP3260 Assignment 2
@@ -131,7 +138,7 @@ public class Application
                     break;
                 default:
                     // Incorrect command line parameters
-                    System.out.println("USAGE: java Application [filename] --[encrypt|encode|decrypt|decode]");
+                    System.out.println("USAGE (From compiled classes): java Application [filename] --[encrypt|encode|decrypt|decode]");
                     System.exit(1);
             }
 

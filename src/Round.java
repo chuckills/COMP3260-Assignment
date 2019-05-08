@@ -1,3 +1,10 @@
+/*
+======================================================
+COMP3260 Assignment 2
+Gregory Choice(c9311718) & Christopher Booth(c3229932)
+======================================================
+*/
+
 /** Round.java
  *
  * Contains all methods required for the phases of each round

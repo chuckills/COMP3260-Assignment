@@ -1,5 +1,12 @@
 import java.util.HashMap;
 
+/*
+======================================================
+COMP3260 Assignment 2
+Gregory Choice(c9311718) & Christopher Booth(c3229932)
+======================================================
+*/
+
 /** SBox.java
  *
  * A simple class containing static lookup tables for AES SBox and ISBox
