@@ -46,7 +46,8 @@ public class AES4 extends AES
             // addKey() removed
 
             // Copy round output to round block array
-            System.arraycopy(outState, 0, roundBlocks[i], 0, outState.length);
+            for(int j = 0; j < 4; j++)
+                System.arraycopy(outState[j], 0, roundBlocks[i][j], 0, outState[j].length);
         }
 
         outState = round.subBytes(outState);

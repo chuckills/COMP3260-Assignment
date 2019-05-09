@@ -123,15 +123,17 @@ public class Round
      */
     public int[][] subBytes(int[][] inState)
     {
+        int[][] outState = new int[4][4];
+        System.arraycopy(inState, 0, outState, 0, inState.length);
         // Choose encrypt or decrypt
         if(!decrypt)
         {
             // Substitute from SBox
-            for(int i = 0; i < inState.length; i++)
+            for(int i = 0; i < outState.length; i++)
             {
-                for(int j = 0; j < inState[i].length; j++)
+                for(int j = 0; j < outState[i].length; j++)
                 {
-                    inState[i][j] = SBox.SBOX.get(inState[i][j]);
+                    outState[i][j] = SBox.SBOX.get(outState[i][j]);
                 }
             }
         }
@@ -147,7 +149,7 @@ public class Round
             }
         }
 
-        return inState;
+        return outState;
     }
 
     /** shiftRows()
