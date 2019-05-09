@@ -77,23 +77,12 @@ public abstract class AES
      */
     public void compareBits(int round, int[][] block, int[][] blockOne)
     {
-        String binaryDifference;
-
         for (int i = 0; i < 4; i++)
         {
             for(int j = 0; j < 4; j++)
             {
-                // XOR corresponding cells and convert to a binary string
-                binaryDifference = Integer.toBinaryString(block[i][j] ^ blockOne[i][j]);
-
-                // Count the number of 1s in the string
-                for(int k = 0; k < binaryDifference.length(); k++)
-                {
-                    if(binaryDifference.charAt(k) == '1')
-                    {
-                        avalanche[round]++;
-                    }
-                }
+                // XOR corresponding cells and count the number of 1's
+                avalanche[round] += Integer.bitCount(block[i][j] ^ blockOne[i][j]);
             }
         }
     }

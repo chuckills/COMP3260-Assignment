@@ -1,6 +1,14 @@
 COMP3260 Assignment 2 ReadMe.txt
 Gregory Choice(c9311718) & Christopher Booth(c3229932)
 
+To compile: javac *.java
+
+To run from class files: java Application [filename] --[encrypt|encode|decrypt|decode]
+
+To run from supplied batch file and executable jar: .\Application [filename] --[encrypt|encode|decrypt|decode]
+
+To run directly from supplied jar: java -jar Application.jar [filename] --[encrypt|encode|decrypt|decode]
+
 =========================================================================================================
 Class Descriptions
 =========================================================================================================
