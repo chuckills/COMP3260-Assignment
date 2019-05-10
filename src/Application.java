@@ -91,8 +91,10 @@ public class Application
                     // Encode the input for all input strings and keys
                     for(int i = 0; i < 5; i++)
                     {
-                        // Run the encryption algorithm using the three plaintext/key combinations
+                        // Run the encryption algorithm for the original inputs
                         versions[i].encode(plainBlock, keyBlock);
+
+                        // Run the algorithm using the 128 alternate plaintext/key combinations
                         for(int j = 0; j < 128; j++)
                         {
                             comparisonP[i].encode(getBlockFromBinary(plainTextI[j]), keyBlock);
