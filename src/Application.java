@@ -84,10 +84,6 @@ public class Application
                     // Initialise an array of versions based on P and K1
                     AES[] comparisonK = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
 
-                    // Parse comparison strings to integer arrays
-                    //int[][] plainBlockI = getBlockFromBinary(plainText1);
-                    //int[][] keyBlockI = getBlockFromBinary(keyText1);
-
                     // Encode the input for all input strings and keys
                     for(int i = 0; i < 5; i++)
                     {
