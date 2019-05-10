@@ -18,10 +18,11 @@ public class Application
      *
      * This method controls the program flow.
      *
-     * @param file - String, provides the file name to load and the prefix for the output file
      * @param function - String, directs the program to encrypt or decrypt (--[encrypt|encode|decrypt|decode])
+     * @param inFile - String, provides the file name to load and the prefix for the output file
+     * @param outFile - String, provides the file name to load and the prefix for the output file
      */
-    private void run(String file, String function)
+    private void run(String function, String inFile, String outFile)
     {
         // Initialise current time
         long time = System.currentTimeMillis();
@@ -33,7 +34,7 @@ public class Application
         String[] keyTextI = new String[128];
 
         // Get input from file
-        try(BufferedReader input = new BufferedReader(new FileReader(file)))
+        try(BufferedReader input = new BufferedReader(new FileReader(inFile)))
         {
             plainText = input.readLine();
             keyText = input.readLine();
@@ -66,7 +67,7 @@ public class Application
         int[][] keyBlock = getBlockFromBinary(keyText);
 
         // Open an output file and select to encode or decode
-        try(PrintWriter out = new PrintWriter(file.substring(0, file.lastIndexOf('.')) + "_output.txt"))
+        try(PrintWriter out = new PrintWriter(outFile))
         {
             StringBuilder outText = new StringBuilder();
 
@@ -139,7 +140,7 @@ public class Application
                     break;
                 default:
                     // Incorrect command line parameters
-                    System.out.println("USAGE (From compiled classes): java Application [filename] --[encrypt|encode|decrypt|decode]");
+                    System.out.println("USAGE (From compiled classes): java Application --[encrypt|encode|decrypt|decode] [input file] [output file]");
                     System.exit(1);
             }
 
@@ -147,7 +148,7 @@ public class Application
             out.println(outText.toString());
             System.out.println(outText.toString());
             System.out.println();
-            System.out.println("File output to " + file.substring(0, file.lastIndexOf('.')) + "_output.txt");
+            System.out.println("File output to " + outFile);
         }
         catch(FileNotFoundException FNFe)
         {
@@ -286,6 +287,6 @@ public class Application
     public static void main(String[] args)
     {
         Application AES = new Application();
-        AES.run(args[0], args[1]);
+        AES.run(args[0], args[1], args[2]);
     }
 }
