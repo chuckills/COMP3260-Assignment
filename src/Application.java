@@ -29,8 +29,8 @@ public class Application
         // Initialise input strings
         String plainText = "";
         String keyText = "";
-        String plainText1 = "";
-        String keyText1 = "";
+        String[] plainTextI = new String[128];
+        String[] keyTextI = new String[128];
 
         // Get input from file
         try(BufferedReader input = new BufferedReader(new FileReader(file)))
@@ -52,8 +52,8 @@ public class Application
         // Create comparison input strings
         try
         {
-            plainText1 = swapLeftBit(plainText);
-            keyText1 = swapLeftBit(keyText);
+            plainTextI = swapBits(plainText);
+            keyTextI = swapBits(keyText);
         }
         catch(NumberFormatException NFe)
         {
@@ -85,22 +85,25 @@ public class Application
                     AES[] comparisonK = {new AES0(), new AES1(), new AES2(), new AES3(), new AES4()};
 
                     // Parse comparison strings to integer arrays
-                    int[][] plainBlock1 = getBlockFromBinary(plainText1);
-                    int[][] keyBlock1 = getBlockFromBinary(keyText1);
+                    //int[][] plainBlockI = getBlockFromBinary(plainText1);
+                    //int[][] keyBlockI = getBlockFromBinary(keyText1);
 
                     // Encode the input for all input strings and keys
                     for(int i = 0; i < 5; i++)
                     {
                         // Run the encryption algorithm using the three plaintext/key combinations
                         versions[i].encode(plainBlock, keyBlock);
-                        comparisonP[i].encode(plainBlock1, keyBlock);
-                        comparisonK[i].encode(plainBlock, keyBlock1);
-
-                        // Do the comparison with the alternate input
-                        for(int j = 0; j < 11; j++)
+                        for(int j = 0; j < 128; j++)
                         {
-                            comparisonP[i].compareBits(j, versions[i].getRoundBlock(j), comparisonP[i].getRoundBlock(j));
-                            comparisonK[i].compareBits(j, versions[i].getRoundBlock(j), comparisonK[i].getRoundBlock(j));
+                            comparisonP[i].encode(getBlockFromBinary(plainTextI[j]), keyBlock);
+                            comparisonK[i].encode(plainBlock, getBlockFromBinary(keyTextI[j]));
+
+                            // Do the comparison with the alternate inputs
+                            for(int k = 0; k < 11; k++)
+                            {
+                                comparisonP[i].compareBits(k, versions[i].getRoundBlock(k), comparisonP[i].getRoundBlock(k));
+                                comparisonK[i].compareBits(k, versions[i].getRoundBlock(k), comparisonK[i].getRoundBlock(k));
+                            }
                         }
                     }
 
@@ -162,19 +165,25 @@ public class Application
      * @param inputText - String, A string of binary digits
      * @return - String, returns a binary string with the leftmost bit toggled
      */
-    private String swapLeftBit(String inputText) throws NumberFormatException
+    private String[] swapBits(String inputText) throws NumberFormatException
     {
-        // Choose the value of the toggle
-        if(inputText.startsWith("1"))
-        {
-            return "0" + inputText.substring(1);
-        }
-        else if (inputText.startsWith("0"))
-        {
-            return "1" + inputText.substring(1);
-        }
+        String[] bitArray = new String[128];
 
-        throw new NumberFormatException("Input string not binary");
+        for(int i = 0; i < 128; i++)
+        {
+            // Choose the value of the toggle
+            if(inputText.charAt(i) == '1')
+            {
+                bitArray[i] = inputText.substring(0,i) + "0" + inputText.substring(i+1);
+            }
+            else if (inputText.charAt(i) == '0')
+            {
+                bitArray[i] = inputText.substring(0,i) + "1" + inputText.substring(i+1);
+            }
+            else
+                throw new NumberFormatException("Input string not binary");
+        }
+        return bitArray;
     }
 
     /** outputEncode()
@@ -201,19 +210,19 @@ public class Application
         // Format the column headers
         sb.append(String.format("%1$-7s%2$6s%3$6s%4$6s%5$6s%6$6s\n", "Round", "AES0", "AES1", "AES2", "AES3", "AES4"));
 
-        // Format the initial row before encoding
+        // Format the initial row before encoding. Divide by 128 for the average.
         sb.append(String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d\n",
-                        0, version[0].getAvalanche()[0], version[1].getAvalanche()[0],
-                        version[2].getAvalanche()[0], version[3].getAvalanche()[0],
-                        version[4].getAvalanche()[0]));
+                        0, version[0].getAvalanche()[0]/128, version[1].getAvalanche()[0]/128,
+                        version[2].getAvalanche()[0]/128, version[3].getAvalanche()[0]/128,
+                        version[4].getAvalanche()[0]/128));
 
-        // Format the comparison rows
+        // Format the comparison rows. Divide by 128 for the average.
         for(int i = 1; i < version[0].getAvalanche().length; i++)
         {
             sb.append(String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d\n",
-                            i, version[0].getAvalanche()[i], version[1].getAvalanche()[i],
-                            version[2].getAvalanche()[i], version[3].getAvalanche()[i],
-                            version[4].getAvalanche()[i]));
+                            i, version[0].getAvalanche()[i]/128, version[1].getAvalanche()[i]/128,
+                            version[2].getAvalanche()[i]/128, version[3].getAvalanche()[i]/128,
+                            version[4].getAvalanche()[i]/128));
         }
         return sb.toString();
     }
