@@ -260,7 +260,7 @@ public class Application
     /** getBlockFromHex()
      *
      * This method was used during testing to take a hexadecimal input.
-     * It is no longer needed for this implementation.
+     * It is not needed for this implementation.
      *
      * @param input - String, 128 bit hexadecimal string
      * @return - int[][], the converted binary string as a block of integers

@@ -1,1 +1,1 @@
-java -jar Application.jar %1 %2
+java -jar Application.jar %1 %2 %3
