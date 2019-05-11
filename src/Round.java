@@ -108,7 +108,7 @@ public class Round
 
         for(int j = 0; j < word.length; j++)
         {
-            newWord[j] = SBox.SBOX[word[j]];//SBox.SBOX.get(word[j]);
+            newWord[j] = SBox.SBOX[word[j]];
         }
 
         return newWord;
@@ -133,7 +133,7 @@ public class Round
             {
                 for(int j = 0; j < outState[i].length; j++)
                 {
-                    outState[i][j] = SBox.SBOX[outState[i][j]];//SBox.SBOX.get(outState[i][j]);
+                    outState[i][j] = SBox.SBOX[outState[i][j]];
                 }
             }
         }
@@ -144,7 +144,7 @@ public class Round
             {
                 for(int j = 0; j < inState[i].length; j++)
                 {
-                    inState[i][j] = SBox.I_SBOX[inState[i][j]];//SBox.ISBOX.get(inState[i][j]);
+                    inState[i][j] = SBox.I_SBOX[inState[i][j]];
                 }
             }
         }
