@@ -97,7 +97,7 @@ public class Application
                             comparisonP[i].encode(getBlockFromBinary(plainTextI[j]), keyBlock);
                             comparisonK[i].encode(plainBlock, getBlockFromBinary(keyTextI[j]));
 
-                            // Do the comparison with the alternate inputs
+                            // Do the comparison with the alternate inputs for avalanche analysis
                             for(int k = 0; k < 11; k++)
                             {
                                 comparisonP[i].compareBits(k, versions[i].getRoundBlock(k), comparisonP[i].getRoundBlock(k));
@@ -209,13 +209,13 @@ public class Application
         // Format the column headers
         sb.append(String.format("%1$-7s%2$6s%3$6s%4$6s%5$6s%6$6s\n", "Round", "AES0", "AES1", "AES2", "AES3", "AES4"));
 
-        // Format the initial row before encoding. Divide by 128 for the average.
+        // Format the initial row before encoding. Divide by 128 for the average avalanche result.
         sb.append(String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d\n",
                         0, version[0].getAvalanche()[0]/128, version[1].getAvalanche()[0]/128,
                         version[2].getAvalanche()[0]/128, version[3].getAvalanche()[0]/128,
                         version[4].getAvalanche()[0]/128));
 
-        // Format the comparison rows. Divide by 128 for the average.
+        // Format the comparison rows. Divide by 128 for the average avalanche result.
         for(int i = 1; i < version[0].getAvalanche().length; i++)
         {
             sb.append(String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d\n",
