@@ -210,18 +210,18 @@ public class Application
         sb.append(String.format("%1$-7s%2$6s%3$6s%4$6s%5$6s%6$6s\n", "Round", "AES0", "AES1", "AES2", "AES3", "AES4"));
 
         // Format the initial row before encoding. Divide by 128 for the average avalanche result.
-        sb.append(String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d\n",
-                        0, version[0].getAvalanche()[0]/128, version[1].getAvalanche()[0]/128,
-                        version[2].getAvalanche()[0]/128, version[3].getAvalanche()[0]/128,
-                        version[4].getAvalanche()[0]/128));
+        sb.append(String.format("%1$-7d%2$6.0f%3$6.0f%4$6.0f%5$6.0f%6$6.0f\n",
+                        0, version[0].getAvalanche()[0]/128.0, version[1].getAvalanche()[0]/128.0,
+                        version[2].getAvalanche()[0]/128.0, version[3].getAvalanche()[0]/128.0,
+                        version[4].getAvalanche()[0]/128.0));
 
         // Format the comparison rows. Divide by 128 for the average avalanche result.
         for(int i = 1; i < version[0].getAvalanche().length; i++)
         {
-            sb.append(String.format("%1$-7d%2$6d%3$6d%4$6d%5$6d%6$6d\n",
-                            i, version[0].getAvalanche()[i]/128, version[1].getAvalanche()[i]/128,
-                            version[2].getAvalanche()[i]/128, version[3].getAvalanche()[i]/128,
-                            version[4].getAvalanche()[i]/128));
+            sb.append(String.format("%1$-7d%2$6.0f%3$6.0f%4$6.0f%5$6.0f%6$6.0f\n",
+                            i, version[0].getAvalanche()[i]/128.0, version[1].getAvalanche()[i]/128.0,
+                            version[2].getAvalanche()[i]/128.0, version[3].getAvalanche()[i]/128.0,
+                            version[4].getAvalanche()[i]/128.0));
         }
         return sb.toString();
     }
