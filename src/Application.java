@@ -287,7 +287,7 @@ public class Application
     public static void main(String[] args)
     {
         Application AES = new Application();
-        if(args.length > 3)
+        if(args.length == 3)
             AES.run(args[0], args[1], args[2]);
         else
             System.out.println("USAGE (From compiled classes): java Application --[encrypt|encode|decrypt|decode] [input file] [output file]");
